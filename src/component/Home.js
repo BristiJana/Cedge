@@ -16,6 +16,18 @@ function Home() {
             <li>
               <Link to="/tenant-onboard">TenantOnboard</Link>
             </li>
+            <li>
+              <Link to="/roletenant">Role Tenant Define</Link>
+            </li>
+            <li>
+              <Link to="/user-registration">User Registration</Link>
+            </li>
+            <li>
+              <Link to="/pages-role-link">Page Role Define</Link>
+            </li>
+            <li>
+              <Link to="/schedule-process">Schedule Process</Link>
+            </li>
           </ul>
         </nav>
     </div>

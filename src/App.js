@@ -5,10 +5,11 @@ import { BrowserRouter as Router, Route,Routes, Switch, Link } from 'react-route
 import Home from './component/Home'
 import TenantHierarchyDefineComponent from './component/TenantHirercy'
 import TenantOnboardComponent from './component/TenantOnboard';
-import TenantOnboardDetailsComponent from './component/TenantOnboardDetail';
-import Tenant1 from './component/Tenant1';
-import Tenant2 from './component/Tenant2';
+import UserRegistration from './component/UserRegistration';
+import ScheduleProcess from './component/ScheduleProcess';
 
+import RoleTenantComponent from './component/RoleTenant';
+import Pagerole from './component/Pagerole';
 function App() {
   return (
     
@@ -20,7 +21,12 @@ function App() {
           <Route path="/"  element={<Home />}/>
           <Route path="/tenant-hierarchy-define"  element={<TenantHierarchyDefineComponent/>}/>
           <Route path="/tenant-onboard" element={<TenantOnboardComponent/>}/>
-          <Route path="/tenant-onboarddetail" element={<TenantOnboardDetailsComponent/>}/>
+          
+          
+          <Route path='/roletenant' element={<RoleTenantComponent/>}/>
+          <Route path='/user-registration' element={<UserRegistration/>}/>
+          <Route path='/pages-role-link' element={<Pagerole/>}/>
+          <Route path='/schedule-process' element={<ScheduleProcess/>}/>
         </Routes>
       </div>
     </Router>

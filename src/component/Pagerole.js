@@ -1,6 +1,9 @@
 import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {DataSource} from './DataSource.js';
+import {DataSource3,DataSource4} from './DataSource.js';
+import { ma } from '@angular/material/slide-toggle';
+import { MatLabel } from '@angular/material/form-field';
+
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import './TenantOnboardComponent.css';
@@ -19,9 +22,9 @@ import {
   FormLabel
 } from "@material-ui/core";
 
-function TenantOnboardComponent() {
-  const [dataSource, setDataSource] = useState(DataSource);
-  const [displayColumns] = useState(['actions', 'tenant_name', 'tenant_type', 'address1', 'pincode']);
+function Pagerole() {
+  const [dataSource, setDataSource] = useState(DataSource3);
+  const [displayColumns] = useState(['actions', 'tenant_name', 'role_name', 'user_name']);
   const [screenName] = useState('Tenant Onboard');
   const [BTN_VAL, setBTN_VAL] = useState('Submit');
   const [USERID] = useState(localStorage.getItem('user_id'));
@@ -96,7 +99,7 @@ function TenantOnboardComponent() {
     const searchValue = value.toLowerCase();
   
     // Filter the data based on the search value for all columns
-    const filteredData = DataSource.filter((row) =>
+    const filteredData = DataSource3.filter((row) =>
       displayColumns.some((column) =>
         row[column] !== undefined &&
         row[column].toString().toLowerCase().includes(searchValue)
@@ -124,19 +127,8 @@ function TenantOnboardComponent() {
   const [tenantonboardForm, setTenantonboardForm] = useState({
     id: "",
     tenant_name: "",
-    tenant_shortname: "",
-    is_legal_tenant: false,
-    tenant_code: "",
-    tenant_type_ref_id: "",
-    tenant_belongs_to: "",
-    address1: "",
-    address2: "",
-    bank_tenant_ref_id: "",
-    pincode: "",
-    country_ref_id: "",
-    state_ref_id: "",
-    city_ref_id: "",
-    is_active: true,
+   role_name:"",
+   user_name:""
   });
   const [BTN_VAL1, setBTN_VAL1] = useState("Submit");
   const [tenantHierarchyData, setTenantHierarchyData] = useState([]);
@@ -158,18 +150,8 @@ function TenantOnboardComponent() {
       ...tenantonboardForm,
       id: row.id,
       tenant_name: row.tenant_name,
-      tenant_shortname: row.tenant_shortname,
-      is_legal_tenant: row.is_legal_tenant,
-      tenant_code: row.tenant_code,
-      tenant_type_ref_id: row.tenant_type_ref_id,
-      tenant_belongs_to: row.tenant_belongs_to,
-      address1: row.address1,
-      address2: row.address2,
-      bank_tenant_ref_id: row.bank_tenant_ref_id,
-      pincode: row.pincode,
-      country_ref_id: row.country_ref_id,
-      state_ref_id: row.state_ref_id,
-      city_ref_id: row.city_ref_id,
+    role_name:row.role_name,
+    user_name:row.user_name,
       is_active: row.is_active,
     });
     setBTN_VAL1("Update");
@@ -180,18 +162,9 @@ function TenantOnboardComponent() {
     setTenantonboardForm({
       id: "",
       tenant_name: "",
-      tenant_shortname: "",
-      is_legal_tenant: false,
-      tenant_code: "",
-      tenant_type_ref_id: "",
-      tenant_belongs_to: "",
-      address1: "",
-      address2: "",
-      bank_tenant_ref_id: "",
-      pincode: "",
-      country_ref_id: "",
-      state_ref_id: "",
-      city_ref_id: "",
+      role_name:"",
+    user_name:"",
+     
       is_active: true,
     });
   };
@@ -223,6 +196,46 @@ function TenantOnboardComponent() {
     setTenantonboardForm(updatedForm);
   };
 
+ 
+  const onCheckboxChange = (dynamic, event, i) => {
+    if (tenantonboardForm.tenant_name === "" || tenantonboardForm.role_name === "" || tenantonboardForm.user_name === "") {
+      Swal.fire({
+       
+        title: 'Please select tenant first',
+      });
+  
+      
+      event.target.checked = false;
+      
+    } else {
+      
+      const updatedDynamic = { ...dynamic, check: event.target.checked };
+    }
+  
+    
+  };
+  
+  
+  
+  const read = (dynamic, event, i) => {
+    console.log(event.target)
+    const updatedDynamic = { ...dynamic, read_access: event.target.checked };
+   
+  };
+  
+  // Implement your write function
+  const write = (dynamic, event, i) => {
+    console.log(event.target)
+    const updatedDynamic = { ...dynamic, write_access: event.target.checked };
+   
+  };
+  
+  
+  const deletefunc = (dynamic, event, i) => {
+    console.log(event.target)
+    const updatedDynamic = { ...dynamic, delete_access: event.target.checked };
+    
+  };
   
 
   return (
@@ -237,7 +250,7 @@ function TenantOnboardComponent() {
                    
                     {open?(
                       <><h5>
-                      <strong>List of Tenant Onboard</strong>
+                      <strong>List of Pages Role Link</strong>
                     </h5>
                     <button
                         className="btn btn-secondary buttons-html5"
@@ -247,9 +260,9 @@ function TenantOnboardComponent() {
                         onClick={() => setopen(!open)}
                      
                       ><em className="fa fa-plus" aria-hidden="true" style={{ color: 'white' }}></em>
-                        <span>Add New Tenant Onboard</span>
+                        <span>Add New Pages Role Link</span>
                       </button></>):(  <><h5>
-                      <strong>Tenant Onboard</strong>
+                      <strong>Pages Role Link</strong>
                     </h5><button
                         className="btn btn-secondary buttons-html5"
                         tabIndex="0"
@@ -257,7 +270,7 @@ function TenantOnboardComponent() {
                         type="button"
                         onClick={() => setopen(!open)}
                       >
-                        <span><em className="fa fa-calendar" aria-hidden="true" style={{ color: 'white' }}></em>Add New Tenant Onboard</span>
+                        <span><em className="fa fa-calendar" aria-hidden="true" style={{ color: 'white' }}></em>List of Pages Role Link</span>
                       </button></>)}
                   </div>
                 </div>
@@ -303,9 +316,8 @@ function TenantOnboardComponent() {
                     <tr>
                       <th>Actions</th>
                       <th>Tenant Name</th>
-                      <th>Tenant Type</th>
-                      <th>Address1</th>
-                      <th>Pin code</th>
+                      <th>Role Name</th>
+                      <th>User Name</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -324,9 +336,9 @@ function TenantOnboardComponent() {
                           </span>
                         </td>
                         <td>{row.tenant_name}</td>
-                        <td>{row.tenant_type}</td>
-                        <td>{row.address1}</td>
-                        <td>{row.pincode}</td>
+                        <td>{row.role_name}</td>
+                        <td>{row.user_name}</td>
+                        
                       </tr>
                     ))}
                   </tbody>
@@ -388,239 +400,50 @@ function TenantOnboardComponent() {
                     value={tenantonboardForm.id}
                     className="form-control"
                   />
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-8">
-                    <div className="form-group">
-                     
-                      <FormLabel style={{color:"black",marginBottom:"10px"}}>Tenant Name<em style={{ color: "red" }}>*</em></FormLabel>
-                      <TextField
-                       type="text"
-                       name="tenant_name"
-                       value={tenantonboardForm.tenant_name}
-                       onChange={handleInputChange}
-                       variant="outlined"
-                       placeholder="Enter Tenant Name"
-                       required
-                      />
-                      {/* Display validation errors if needed */}
-                    </div>
-                  </div>
-
-                  {/* Additional form fields */}
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-8">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Short Name<em style={{ color: "red" }}>*</em></FormLabel>
-                    
-                      <TextField
-                        type="text"
-                        name="tenant_shortname"
-                        value={tenantonboardForm.tenant_shortname}
-                        onChange={handleInputChange}
-                        variant="outlined"
-                        placeholder="Enter Short Name"
-                        required
-                      />
-                      {/* Display validation errors if needed */}
-                    </div>
-                  </div>
-
+                 
                   <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4">
                     <div className="form-group">
-                      <label className="form-label">Is Legal Tenant?</label>
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            name="is_legal_tenant"
-                            checked={tenantonboardForm.is_legal_tenant}
-                            onChange={handleInputChange}
-                            color="primary"
-                          />
-                        }
-                        label={tenantonboardForm.is_legal_tenant ? "Yes" : "No"}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-8">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Address1<em style={{ color: "red" }}>*</em></FormLabel>
-                    
-                      <TextField
-                        type="text"
-                        name="address1"
-                        value={tenantonboardForm.address1}
-                        onChange={handleInputChange}
-                        variant="outlined"
-                        placeholder="Enter Address1"
-                        required
-                      />
-                      {/* Display validation errors if needed */}
-                    </div>
-                  </div>
-
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-8">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Address2</FormLabel>
-                    
-                      <TextField
-                        type="text"
-                        name="address2"
-                        value={tenantonboardForm.address2}
-                        onChange={handleInputChange}
-                        variant="outlined"
-                        placeholder="Enter Address2"
-                        required
-                      />
-                      {/* Display validation errors if needed */}
-                    </div>
-                  </div>
-
-                  <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Type of Tenant<em style={{ color: "red" }}>*</em></FormLabel>
+                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Tenant<em style={{ color: "red" }}>*</em></FormLabel>
                     
                       
                       <Select
-                        name="bank_tenant_ref_id"
-                        value={tenantonboardForm.bank_tenant_ref_id}
+                        name="tenant_name"
+                        value={tenantonboardForm.tenant_name}
                         onChange={handleInputChange}
                         variant="outlined"
                         required
-                        placeholder="Bank Tenant"
+                        placeholder="Select Tenant"
                         disabled={editdisabled}
                         style={{width:"80%"}}
+                        
                       >
                         {tenantHierarchyData.map((tenant) => (
                           <MenuItem key={tenant.id} value={tenant.id}>
-                            {tenant.bank_tenant_ref_id}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-8">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Tenant Code<em style={{ color: "red" }}>*</em></FormLabel>
-                    
-                      
-                      <TextField
-                        type="text"
-                        name="tenant_code"
-                        value={tenantonboardForm.tenant_code}
-                        onChange={handleInputChange}
-                        variant="outlined"
-                        placeholder="Enter Tenant Code"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Type of Tenant<em style={{ color: "red" }}>*</em></FormLabel>
-                    
-                      
-                      <Select
-                        name="tenant_type_ref_id"
-                        value={tenantonboardForm.tenant_type_ref_id}
-                        onChange={handleInputChange}
-                        variant="outlined"
-                        required
-                        placeholder="Select Tenant Type"
-                        disabled={editdisabled}
-                        style={{width:"80%"}}
-                      >
-                        {tenantHierarchyData.map((tenant) => (
-                          <MenuItem key={tenant.id} value={tenant.id}>
-                            {tenant.tenant_type_name}
+                            {tenant.tenant_name}
                           </MenuItem>
                         ))}
                       </Select>
                     </div>
                   </div>
                   <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Tenant Belongs To<em style={{ color: "red" }}>*</em></FormLabel>
-                    
-                      
-                      <Select
-                        name="tenant_belongs_to"
-                        value={tenantonboardForm.tenant_belongs_to}
-                        onChange={handleInputChange}
-                        variant="outlined"
-                        required
-                        placeholder="Select Parent Tenant"
-                        disabled={editdisabled}
-                        style={{width:"80%"}}
-                      >
-                        {tenantHierarchyData.map((tenant) => (
-                          <MenuItem key={tenant.id} value={tenant.id}>
-                            {tenant.tenant_belongs_to}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-8">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Pin Code<em style={{ color: "red" }}>*</em></FormLabel>
-                    
-                      
-                      <TextField
-                        type="text"
-                        name="pincode"
-                        value={tenantonboardForm.pincode}
-                        onChange={handleInputChange}
-                        variant="outlined"
-                        placeholder="Enter Pin Code"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4">
-                    <div className="form-group">
-                    <FormLabel style={{color:"black",marginBottom:"10px"}}>Country<em style={{ color: "red" }}>*</em></FormLabel>
-                    
-                      
-                      <Select
-                        name="country_ref_id"
-                        value={tenantonboardForm.country_ref_id}
-                        onChange={handleInputChange}
-                        variant="outlined"
-                        required
-                        placeholder="Select Country"
-                        disabled={editdisabled}
-                        style={{width:"80%"}}
-                      >
-                        {tenantHierarchyData.map((tenant) => (
-                          <MenuItem key={tenant.id} value={tenant.id}>
-                            {tenant.country_ref_id}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>
-                  <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4">
-                  <FormLabel style={{color:"black",marginBottom:"10px"}}>State<em style={{ color: "red" }}>*</em></FormLabel>
+                  <FormLabel style={{color:"black",marginBottom:"10px"}}>Role <em style={{ color: "red" }}>*</em></FormLabel>
                     
                     <div className="form-group">
                     
                       
                       <Select
-                        name="state_ref_id"
-                        value={tenantonboardForm.state_ref_id}
+                        name="role_name"
+                        value={tenantonboardForm.role_name}
                         onChange={handleInputChange}
                         variant="outlined"
                         required
-                        placeholder="Select State"
+                        placeholder="Select Role"
                         disabled={editdisabled}
                         style={{width:"80%"}}
                       >
                         {tenantHierarchyData.map((tenant) => (
                           <MenuItem key={tenant.id} value={tenant.id}>
-                            {tenant.state_ref_id}
+                            {tenant.role_name}
                           </MenuItem>
                         ))}
                       </Select>
@@ -630,24 +453,24 @@ function TenantOnboardComponent() {
                   {/* More form fields */}
               
                   <div className="col-lg-4 col-md-4 col-sm-4 col-xs-8">
-                  <FormLabel style={{color:"black",marginBottom:"10px"}}>City<em style={{ color: "red" }}>*</em></FormLabel>
+                  <FormLabel style={{color:"black",marginBottom:"10px"}}>User<em style={{ color: "red" }}>*</em></FormLabel>
 
                     <div className="form-group">
                     
                       
                     <Select
-                      name="city_ref_id"
-                      value={tenantonboardForm.city_ref_id}
+                      name="user_name"
+                      value={tenantonboardForm.user_name}
                       onChange={handleInputChange}
                       variant="outlined"
                       required
-                      placeholder="Select City"
+                      placeholder="Select User"
                       disabled={editdisabled}
                       style={{width:"80%"}}
                     >
                       {tenantHierarchyData.map((tenant) => (
                         <MenuItem key={tenant.id} value={tenant.id}>
-                          {tenant.city_ref_id}
+                          {tenant.user_name}
                         </MenuItem>
                       ))}
                     </Select>
@@ -657,8 +480,8 @@ function TenantOnboardComponent() {
 
                   <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4" style={{paddingTop:"10px"}}>
                     <div className="form-group">
-                      <label className="form-label">Is Active?</label>
-                      <br />
+                      <label className="form-label" style={{paddingRight:"10px"}}>Is Active?</label>
+                     
                       <FormControlLabel
                         control={
                           <Switch
@@ -677,6 +500,61 @@ function TenantOnboardComponent() {
                 </div>
               </div>
             </div>
+            <div className="card" style={{paddingBottom:"20px"}}>
+      <div className="body">
+        <div className="form-group">
+          <div className="table-responsive" formArrayName="initialItemRow">
+            <table id="tableExport1" className="display table table-hover table-checkable order-column m-t-20 width-per-100">
+              <thead>
+                <tr>
+                  <th style={{ backgroundColor: '#CAD5E2' }}></th>
+                  <th style={{ backgroundColor: '#CAD5E2' }}>Form Name</th>
+                  <th style={{ backgroundColor: '#CAD5E2' }}>Read Access</th>
+                  <th style={{ backgroundColor: '#CAD5E2' }}>Write Access</th>
+                  <th style={{ backgroundColor: '#CAD5E2' }}>Delete Access</th>
+                </tr>
+              </thead>
+              <tbody className="main_tbody">
+                {DataSource4.map((dynamic, i) => (
+                  <tr key={i}>
+                    <td style={{ backgroundColor: dynamic.is_parent ? '#90e0ef' : '#d0efff' }}>
+                      <input type="checkbox" id={`check${i + 1}`} value={dynamic.check} onChange={(e) =>onCheckboxChange(dynamic, e, i)} />
+                    </td>
+                    <td style={{ backgroundColor: dynamic.is_parent ? '#90e0ef' : '#d0efff' }}>
+                      <mat-label>{dynamic.form_name}</mat-label>
+                    </td>
+                    <td style={{ backgroundColor: dynamic.is_parent ? '#90e0ef' : '#d0efff' }}>
+                      <label style={{ marginRight: '0.5rem' }}>No</label>
+                      <Switch
+                           id={`read_access${i + 1}`} checked={dynamic.read_access} onChange={(e) => read(dynamic, e, i)}
+                          />
+   <label>Yes</label>
+                    </td>
+                    <td style={{ backgroundColor: dynamic.is_parent ? '#90e0ef' : '#d0efff' }}>
+                      <label style={{ marginRight: '0.5rem' }}>No</label>
+                      <Switch
+                          id={`write_access${i + 1}`} checked={dynamic.write_access} onChange={(e) => write(dynamic, e, i)}
+                          />
+   <label>Yes</label>
+                    
+                    </td>
+                    <td style={{ backgroundColor: dynamic.is_parent ? '#90e0ef' : '#d0efff' }}>
+                    <label style={{ marginRight: '0.5rem' }}>No</label>
+                      <Switch
+                          id={`delete_access${i + 1}`} checked={dynamic.delete_access} onChange={(e) =>deletefunc(dynamic, e, i)}
+                          />
+   <label>Yes</label>
+                    
+                      
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
             <div className="card" style={{paddingBottom:"20px"}}>
               <div className="body" style={{ textAlign: "center" }}>
                 <div className="button-demo">
@@ -704,4 +582,4 @@ function TenantOnboardComponent() {
   );
 }
 
-export default TenantOnboardComponent;
+export default Pagerole;
